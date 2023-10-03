@@ -2,6 +2,7 @@ package com.bima.mywebview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.JsResult
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -22,7 +23,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        webView.webChromeClient = WebChromeClient()
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onJsAlert(
+                view: WebView,
+                url: String,
+                message: String,
+                result: android.webkit.JsResult
+            ): Boolean {
+                Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+                result.confirm()
+                return true
+            }
+        }
 
         webView.loadUrl("https://www.dicoding.com")
     }
